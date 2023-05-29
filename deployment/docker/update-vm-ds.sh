@@ -1,10 +1,8 @@
 #!/bin/sh
+set -ex
 
 VM_DS_PATH='deployment/docker/grafana-plugins/victoriametrics-datasource'
 PLUGIN_PATH='deployment/docker/grafana-plugins'
-# VM_DS_PATH='grafana-plugins/victoriametrics-datasource'
-# PLUGIN_PATH='grafana-plugins'
-#SIZE=$(du -sB 1 $VM_DS_PATH | cut -f 1)
 
 if [[ ! -d ${VM_DS_PATH} ]] or [[ $(du -sB 1 $VM_DS_PATH | cut -f 1) -le 104857600 ]]; then
     echo "Victoriametrics datasource is not installed. Installing datasource..."
@@ -22,6 +20,7 @@ else
             tar -xzf ${VM_DS_PATH}-v${VM_DS_VER}.tar.gz -C ${PLUGIN_PATH}
 	        echo "Victoriametrics datasource has been installed.2"
         else
+            rm -rf ${VM_DS_PATH}/*
             tar -xzf ${VM_DS_PATH}-v${VM_DS_VER}.tar.gz -C ${PLUGIN_PATH}
             echo "Victoriametrics datasource has been installed.3"
         fi

@@ -174,11 +174,10 @@ remove-docker-images:
 	docker image ls --format '{{.Repository}}\t{{.ID}}' | awk '{print $$2}' | xargs docker image rm -f
 
 update-vm-datasource:
-	$(shell /bin/sh -x ./deployment/docker/update-vm-ds.sh)
+	  VM_DS_VER='$(VM_DS_VER)' /bin/sh -x ./deployment/docker/update-vm-ds.sh
 
 use-vm-datasource:
-	docker compose 
-	$(sed -i 's/\"id\"\:\ \"prometheus\"/\"id\"\:\ \"victoriametrics-datasource\"/g' /var/lib/grafana/dashboards/vm.json && \
+	docker compose -f deployment/docker/docker-compose.yml exec grafana sed -i 's/\"id\"\:\ \"prometheus\"/\"id\"\:\ \"victoriametrics-datasource\"/g' /var/lib/grafana/dashboards/vm.json && \
 	sed -i 's/\"type\"\:\ \"prometheus\"/\"type\"\:\ \"victoriametrics-datasource\"/g' /var/lib/grafana/dashboards/vm.json && \
 	sed -i 's/\"name\"\:\ \"Prometheus\"/\"name\"\:\ \"VictoriaMetrics\"/g' /var/lib/grafana/dashboards/vm.json && \
 	sed -i 's/\"id\"\:\ \"prometheus\"/\"id\"\:\ \"victoriametrics-datasource\"/g' /var/lib/grafana/dashboards/vmagent.json && \
@@ -187,10 +186,11 @@ use-vm-datasource:
 	sed -i 's/\"id\"\:\ \"prometheus\"/\"id\"\:\ \"victoriametrics-datasource\"/g' /var/lib/grafana/dashboards/vmalert.json && \
 	sed -i 's/\"type\"\:\ \"prometheus\"/\"type\"\:\ \"victoriametrics-datasource\"/g' /var/lib/grafana/dashboards/vmalert.json && \
 	sed -i 's/\"name\"\:\ \"Prometheus\"/\"name\"\:\ \"VictoriaMetrics\"/g' /var/lib/grafana/dashboards/vmalert.json && \
-	sed -i 's/type\:\ prometheus/type\:\ victoriametrics-datasource/g' /etc/grafana/provisioning/datasources/datasources.yml)
+	sed -i 's/type\:\ prometheus/type\:\ victoriametrics-datasource/g' /etc/grafana/provisioning/datasources/datasources.yml
 
-docker-single-up-vm-datasource: update-vm-datasource use-vm-datasource
+docker-single-up-vm-datasource: update-vm-datasource
 	docker-compose -f deployment/docker/docker-compose.yml up -d
+	$(MAKE) use-vm-datasource
 
 docker-single-up: update-vm-datasource
 	docker-compose -f deployment/docker/docker-compose.yml up -d
