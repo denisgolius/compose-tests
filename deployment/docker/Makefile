@@ -174,19 +174,10 @@ remove-docker-images:
 	docker image ls --format '{{.Repository}}\t{{.ID}}' | awk '{print $$2}' | xargs docker image rm -f
 
 update-vm-datasource:
-	  VM_DS_VER='$(VM_DS_VER)' /bin/sh -x ./deployment/docker/update-vm-ds.sh
+	  VM_DS_VER='$(VM_DS_VER)' /bin/sh ./deployment/docker/update-vm-ds.sh
 
 use-vm-datasource-single:
-	mkdir -p /tmp/dashboards-vm-ds
-	cp ../../dashboards/victoriametrics.json /tmp/dashboards-vm-ds/vm.json.json
-	cp ../../dashboards/victoriametrics-cluster.json /tmp/dashboards-vm-ds/victoriametrics-cluster-vm-ds.json
-	cp ../../dashboards/vmagent.json /tmp/dashboards-vm-ds/vmagents.json
-	cp ../../dashboards/vmalert.json /tmp/dashboards-vm-ds/vmalert.json
-
-	@for FILE in /tmp/dashboards-vm-ds; do sed -i 's/\"id\"\:\ \"prometheus\"/\"id\"\:\ \"victoriametrics-datasource\"/g' ${FILE}; done
-	@for FILE in /tmp/dashboards-vm-ds; do sed -i 's/\"type\"\:\ \"prometheus\"/\"type\"\:\ \"victoriametrics-datasource\"/g'${FILE}; done
-	@for FILE in /tmp/dashboards-vm-ds; do 's/\"name\"\:\ \"Prometheus\"/\"name\"\:\ \"VictoriaMetrics\"/g' ${FILE}; done
-	sed -i 's/type\:\ prometheus/type\:\ victoriametrics-datasource/g' /etc/grafana/provisioning/datasources/datasources.yml
+	/bin/sh -x ./deployment/docker/update-vm-ds.sh
 
 docker-single-up-vm-datasource: update-vm-datasource
 	docker-compose -f deployment/docker/docker-compose.yml up -d

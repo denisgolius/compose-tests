@@ -48,10 +48,15 @@ services:
     volumes:
       - grafanadata:/var/lib/grafana
       - ./grafana-plugins:/var/lib/grafana/plugins
-      - ./provisioning/:/etc/grafana/provisioning/
-      - ./../../dashboards/victoriametrics.json:/var/lib/grafana/dashboards/vm.json
-      - ./../../dashboards/vmagent.json:/var/lib/grafana/dashboards/vmagent.json
-      - ./../../dashboards/vmalert.json:/var/lib/grafana/dashboards/vmalert.json
+      - ./provisioning/:/var/lib/grafana/vm/provisioning/
+      - ./../../dashboards/victoriametrics.json:/var/lib/grafana/vm/vm.json
+      - ./../../dashboards/vmagent.json:/var/lib/grafana/vm/vmagent.json
+      - ./../../dashboards/vmalert.json:/var/lib/grafana/vm/vmalert.json
+      - ./update-dashboards.sh:/var/lib/grafana/update-dashboards.sh
+    entrypoint: >
+      /bin/sh -c "
+      /var/lib/grafana/update-dashboards.sh && 
+      /run.sh"
     environment:
       - "GF_ALLOW_LOADING_UNSIGNED_PLUGINS=victoriametrics-datasource"
       - "GF_DEFAULT_APP_MODE=development"
