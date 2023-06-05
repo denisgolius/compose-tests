@@ -176,12 +176,8 @@ remove-docker-images:
 update-vm-datasource:
 	  VM_DS_VER='$(VM_DS_VER)' /bin/sh -x ./deployment/docker/update-vm-ds.sh
 
-use-vm-datasource-single:
-	/bin/sh -x ./deployment/docker/update-vm-ds.sh
-
 docker-single-up-vm-datasource: update-vm-datasource
 	docker-compose -f deployment/docker/docker-compose.yml up -d
-	$(MAKE) use-vm-datasource
 
 docker-single-up: update-vm-datasource
 	docker-compose -f deployment/docker/docker-compose.yml up -d
