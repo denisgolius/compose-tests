@@ -174,7 +174,7 @@ remove-docker-images:
 	docker image ls --format '{{.Repository}}\t{{.ID}}' | awk '{print $$2}' | xargs docker image rm -f
 
 update-vm-datasource:
-	  VM_DS_VER='$(VM_DS_VER)' /bin/sh ./deployment/docker/update-vm-ds.sh
+	  VM_DS_VER='$(VM_DS_VER)' /bin/sh -x ./deployment/docker/update-vm-ds.sh
 
 use-vm-datasource-single:
 	/bin/sh -x ./deployment/docker/update-vm-ds.sh

@@ -4,7 +4,7 @@ set -ex
 VM_DS_PATH='deployment/docker/grafana-plugins/victoriametrics-datasource'
 PLUGIN_PATH='deployment/docker/grafana-plugins'
 
-if [[ ! -d ${VM_DS_PATH} ]] or [[ $(du -sB 1 $VM_DS_PATH | cut -f 1) -le 104857600 ]]; then
+if [[ ! -d ${VM_DS_PATH} ]] or [[! -d ${PLUGIN_PATH}]]; then
     echo "Victoriametrics datasource is not installed. Installing datasource..."
     mkdir -p ${VM_DS_PATH}
     wget -nc https://github.com/VictoriaMetrics/grafana-datasource/releases/download/v${VM_DS_VER}/victoriametrics-datasource-v${VM_DS_VER}.tar.gz -O ${VM_DS_PATH}-v${VM_DS_VER}.tar.gz
