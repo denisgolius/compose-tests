@@ -17,7 +17,7 @@ datasources:
       type: victoriametrics-datasource
       access: proxy
       url: http://victoriametrics:8428
-      isDefault: true
+      isDefault: false
 
     - name: VictoriaMetrics - cluster via VM DS
       type: victoriametrics-datasource

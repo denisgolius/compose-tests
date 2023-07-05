@@ -173,16 +173,17 @@ package-via-docker-386:
 remove-docker-images:
 	docker image ls --format '{{.Repository}}\t{{.ID}}' | awk '{print $$2}' | xargs docker image rm -f
 
+add-vm-dashboards:
+	$(shell sh -c deployment/docker/add-vm-dashboards.sh)
 
-
-docker-single-up:
-	docker-compose -f deployment/docker/docker-compose.yml up -d
+docker-single-up: add-vm-dashboards
+	@VM_DS_VER=$(VM_DS_VER) docker compose -f deployment/docker/docker-compose.yml up -d
 
 docker-single-down:
-	docker-compose -f deployment/docker/docker-compose.yml down -v
+	docker compose -f deployment/docker/docker-compose.yml down -v
 
 docker-cluster-up:
-	docker-compose -f deployment/docker/docker-compose-cluster.yml up -d
+	docker compose -f deployment/docker/docker-compose-cluster.yml up -d
 
 docker-cluster-down:
-	docker-compose -f deployment/docker/docker-compose-cluster.yml down -v
+	docker compose -f deployment/docker/docker-compose-cluster.yml down -v
