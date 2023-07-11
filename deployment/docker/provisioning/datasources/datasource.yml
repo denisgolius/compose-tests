@@ -19,8 +19,8 @@ datasources:
       url: http://victoriametrics:8428
       isDefault: false
 
-    - name: VictoriaMetrics - cluster via VM DS
-      type: victoriametrics-datasource
-      access: proxy
-      url: http://vmselect:8481/select/0/prometheus
-      isDefault: false
+    # - name: VictoriaMetrics - cluster via VM DS
+    #   type: victoriametrics-datasource
+    #   access: proxy
+    #   url: http://vmselect:8481/select/0/prometheus
+    #   isDefault: false
