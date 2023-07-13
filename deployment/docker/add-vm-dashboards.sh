@@ -3,10 +3,6 @@ set -ex
 
 mkdir -p /tmp/dashboards
 
-# cp ./dashboards/victoriametrics.json /tmp/dashboards/victoriametrics-vm-ds.json
-# cp ./dashboards/vmagent.json /tmp/dashboards/vmagent-vm-ds.json
-# cp ./dashboards/vmalert.json /tmp/dashboards/vmalert-vm-ds.json
-
 cp /var/lib/grafana/dashboards/vm.json /tmp/dashboards/victoriametrics-vm-ds.json
 cp /var/lib/grafana/dashboards/vmagent.json /tmp/dashboards/vmagent-vm-ds.json
 cp /var/lib/grafana/dashboards/vmalert.json /tmp/dashboards/vmalert-vm-ds.json
@@ -25,5 +21,4 @@ for file in /tmp/dashboards/*.json; do sed -i  's/\"title\"\:\ \"VictoriaMetrics
 for file in /tmp/dashboards/*.json; do sed -i  's/\"title\"\:\ \"VictoriaMetrics\ -\ vmagent\"/\"title\"\:\ \"VictoriaMetrics\ -\ vmagent\ VM \DS\"/g' "$file"; done
 for file in /tmp/dashboards/*.json; do sed -i  's/\"title\"\:\ \"VictoriaMetrics\ -\ vmalert\"/\"title\"\:\ \"VictoriaMetrics\ -\ vmalert\ VM \DS\"/g' "$file"; done
 
-# cp -r /tmp/dashboards/*.json ./dashboards/
 cp -r /tmp/dashboards/*.json /var/lib/grafana/dashboards

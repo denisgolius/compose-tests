@@ -178,6 +178,8 @@ add-vm-dashboards:
 
 docker-single-up: add-vm-dashboards
 	@VM_DS_VER=$(VM_DS_VER) docker compose -f deployment/docker/docker-compose.yml up -d
+	docker compose -f deployment/docker/docker-compose.yml exec -u 0 grafana sh /var/lib/grafana/add-vm-dashboards.sh
+	docker compose -f deployment/docker/docker-compose.yml restart grafana
 
 docker-single-down:
 	docker compose -f deployment/docker/docker-compose.yml down -v
